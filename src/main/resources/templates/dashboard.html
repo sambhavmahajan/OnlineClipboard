@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Online Clipboard</title>
+</head>
+<body>
+<h1 th:text="${dashboard.getTitle()}"></h1>
+<p><a href="/logout">Logout</a></p>
+<h2>Your Clipboards</h2>
+<ul>
+    <th:block th:each="clipboard : ${dashboard.getClipboards()}">
+        <li><a th:href="@{/clip/{shortId}(shortId=${clipboard.getShortId()})}" th:text="${clipboard.getTitle()}"></a> <a th:text="${clipboard.getTimestamp()}"></a></li>
+    </th:block>
+</ul>
+
+<h3>Create a New Clipboard</h3>
+<form action="/clip" method="POST">
+    <label for="title">Title:</label><br>
+    <input type="text" id="title" name="title" required><br><br>
+
+    <label for="content">Content:</label><br>
+    <textarea id="content" name="content" rows="4" cols="50" required></textarea><br><br>
+
+    <button type="submit">Create Clipboard</button>
+</form>
+</body>
+</html>
