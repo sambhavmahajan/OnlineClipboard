@@ -8,18 +8,18 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.8</version> <!-- ✅ Recent stable version -->
+        <version>3.2.8</version> <!-- Recent stable version -->
         <relativePath/> <!-- Lookup parent from repository -->
     </parent>
 
     <groupId>com.github.sambhavmahajan</groupId>
-    <artifactId>online-clipboard</artifactId> <!-- 💡 Optional: use kebab-case for artifactId -->
+    <artifactId>online-clipboard</artifactId> <!-- Optional: use kebab-case for artifactId -->
     <version>0.0.1-SNAPSHOT</version>
     <name>Online Clipboard</name>
     <description>Clipboard web app allowing users to store and retrieve notes online.</description>
 
     <properties>
-        <java.version>21</java.version> <!-- ✅ Java 21 is LTS -->
+        <java.version>21</java.version> <!-- Java 21 is LTS -->
     </properties>
 
     <dependencies>
