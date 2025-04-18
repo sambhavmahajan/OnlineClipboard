@@ -42,10 +42,9 @@ public class ClipboardService {
         return user.getClipboardList();
     }
 
-    public String getByShortId(String shortId) {
+    public Clipboard getByShortId(String shortId) {
         Optional<Clipboard> clipboard = clipboardRepo.findByShortId(shortId);
-        if(clipboard.isEmpty()) return "Invalid shortId";
-        return clipboard.get().getContent();
+        return clipboard.orElse(null);
     }
     @Transactional
     public void save(Clipboard clipboard) {

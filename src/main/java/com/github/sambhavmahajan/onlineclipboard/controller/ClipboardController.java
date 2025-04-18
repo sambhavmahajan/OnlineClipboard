@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @Controller
 @RequestMapping("/clip")
 public class ClipboardController {
@@ -21,11 +23,23 @@ public class ClipboardController {
     }
     @GetMapping("/{shortId}")
     @ResponseBody
-    public String getContent(@PathVariable("shortId") String shortId) {
-        return clipboardService.getByShortId(shortId);
+    public String getContent(@PathVariable("shortId") String shortId, HttpSession session) {
+        Clipboard clipboard = clipboardService.getByShortId(shortId);
+        if(clipboard == null) {
+            return "Invalid url!";
+        }
+        Usr user = userService.isAuthenticated(session);
+        boolean isAuth =  (user != null);
+        if((clipboard.isPrivate() && isAuth && clipboard.getOwner().equals(user))) {
+            return clipboard.getContent();
+        }
+        if(clipboard.isPrivate() && !isAuth) {
+            return "Access denied! This is a private clipboard";
+        }
+        return clipboard.getContent();
     }
     @PostMapping
-    public String createClipboard(@RequestParam String title, @RequestParam String content, Model model, HttpSession session) {
+    public String createClipboard(@RequestParam String title, @RequestParam String content, @RequestParam(required = false) String isPrivate, Model model, HttpSession session) {
         Usr user = userService.isAuthenticated(session);
         if(user == null) {
             return "redirect:/login";
@@ -35,6 +49,8 @@ public class ClipboardController {
         clipboard.setTitle(title);
         clipboard.setContent(content);
         clipboard.setOwner(user);
+        if(isPrivate == null) clipboard.setPrivate(false);
+        else clipboard.setPrivate(isPrivate.equals("true"));
         user.getClipboardList().add(clipboard);
         clipboardService.save(clipboard);
         userService.addUser(user);

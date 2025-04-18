@@ -25,4 +25,5 @@ public class Clipboard {
     private Timestamp timestamp;
     @ManyToOne
     private Usr owner;
+    private boolean isPrivate;
 }
